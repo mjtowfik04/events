@@ -8,10 +8,6 @@ from django.contrib import messages
 
 
 
-def home(request):
-    return render(request, "dashboard/mana.html")
-
-
 def event_form(request):
     if request.method == "POST":
         event_form = EventForm(request.POST)
@@ -75,7 +71,7 @@ def delete(request, id):
         messages.success(request, "Event deleted successfully")
         return redirect('dashboard')  # নিশ্চিত করুন যে এই URL `urls.py` তে আছে
     
-def dashboard(request):
+def organizer_dashboard(request):
     type = request.GET.get('type', 'all')
     participants_all = Participant.objects.all()
     total_participant = participants_all.count()
@@ -84,13 +80,11 @@ def dashboard(request):
     upcoming_events = Event.objects.filter(date__gte=today).order_by("date")
     past_events = Event.objects.filter(date__lt=today).order_by("-date")
     categories = Category.objects.all() 
-    events = Event.objects.select_related('category').prefetch_related('participants').all()
+    # events = Event.objects.select_related('category').prefetch_related('participants').all()
     category_filter = request.GET.get("category", None)
-    events = Event.objects.select_related("category").all()
+    events = Event.objects.all()
     if category_filter:
         events = events.filter(category__name=category_filter)
-
-
     participants = None
     events = None  
 
@@ -111,9 +105,21 @@ def dashboard(request):
         "upcoming_events": upcoming_events.count(),
         "past_events": past_events.count(),
         "participants": participants,  
-        "events": events, 
     }
     return render(request, "dashboard/organizer_dashboard.html", context)
+
+def dashboard(request):
+   
+    events = Event.objects.all()
+   
+
+    context = {
+        
+        "events":events,
+        
+    }
+    return render(request, "dashboard/mana.html", context)
+
 
 
 
