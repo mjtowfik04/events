@@ -2,9 +2,11 @@ from django.shortcuts import render,redirect,get_object_or_404
 from django.http import HttpResponse
 from event.forms import CategoryForm, EventForm, ParticipantForm  
 from django.shortcuts import render
-from .models import Event, Participant,Category
+from .models import Event,Category,Participant
 from django.utils.timezone import now
 from django.contrib import messages
+from django.shortcuts import get_object_or_404
+
 
 
 
@@ -51,7 +53,7 @@ def update_event(request, id):
             participant.events.set([updated_event])  
 
             messages.success(request, "Event updated successfully!")
-            return redirect("dashboard")  
+            return redirect("home-dashboard")  
         else:
             messages.error(request, "Please fix the errors below.")
     else:
@@ -64,12 +66,20 @@ def update_event(request, id):
     }
     return render(request, "test.html", context)
 
+
+
 def delete(request, id):
-    if request.method == 'POST':
-        participant =Participant.objects.get(id=id) # get_object_or_404() ব্যবহার করলে 404 এরর হ্যান্ডেল হবে
-        participant.delete()
-        messages.success(request, "Event deleted successfully")
-        return redirect('dashboard')  # নিশ্চিত করুন যে এই URL `urls.py` তে আছে
+    if request.method =='POST':
+        event = get_object_or_404(Event, id=id)
+        event.delete()
+        messages.success(request, 'Task Deleted Successfully')
+        return redirect('organizer-dashboard')  
+    else:
+            messages.error(request, 'Something went wrong')
+
+    return (request,redirect('organizer-dashboard'))
+
+ 
     
 def organizer_dashboard(request):
     type = request.GET.get('type', 'all')
@@ -80,11 +90,13 @@ def organizer_dashboard(request):
     upcoming_events = Event.objects.filter(date__gte=today).order_by("date")
     past_events = Event.objects.filter(date__lt=today).order_by("-date")
     categories = Category.objects.all() 
-    # events = Event.objects.select_related('category').prefetch_related('participants').all()
+    events = Event.objects.select_related('category').prefetch_related('participants').all()
     category_filter = request.GET.get("category", None)
-    events = Event.objects.all()
+    events = Event.objects.select_related("category").all()
     if category_filter:
         events = events.filter(category__name=category_filter)
+
+
     participants = None
     events = None  
 
@@ -105,22 +117,21 @@ def organizer_dashboard(request):
         "upcoming_events": upcoming_events.count(),
         "past_events": past_events.count(),
         "participants": participants,  
+        "events": events, 
     }
+
+
     return render(request, "dashboard/organizer_dashboard.html", context)
 
-def dashboard(request):
-   
+
+def home_dashboard(request):
     events = Event.objects.all()
-   
+    categorys = Event.objects.select_related('category').all()
+    # status_choices = Category.STATUS_CHOICES 
 
     context = {
-        
-        "events":events,
-        
+        "events": events,
+        # "categorys": categorys,
+        # "status_choices":status_choices,
     }
     return render(request, "dashboard/mana.html", context)
-
-
-
-
-

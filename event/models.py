@@ -26,3 +26,16 @@ class Participant(models.Model):
 
     def __str__(self):
         return self.name
+
+
+# @receiver(post_save, sender=Event)
+# def notify_Participant_send_email(sender, instance, **kwargs):
+#     if created:
+#         category_emails = [emp.email for emp in instance.category.all()]
+#         send_mail(
+#             "New event category",
+#             f"You have been categorized for the event: {instance.name}",
+#             "mjtowfik659672@gmail.com",
+#             category_emails,
+#             fail_silently=False,
+#         )

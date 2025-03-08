@@ -1,4 +1,4 @@
-{% extends "dashboard/dashboard.html" %}
+{% extends "dashboard/deshbaord.html" %}
 {% block title %}Organizer Dashboard{% endblock title %}
 {% block events %}
 <form method="POST" class="max-w-6xl mx-auto p-6">
@@ -24,28 +24,28 @@
 
   <!-- Summary Boxes -->
   <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-    <a href="{% url 'dashboard' %}?type=totalparticipants">
+    <a href="{% url 'organizer-dashboard' %}?type=totalparticipants">
       <div class="bg-blue-500 text-white p-4 shadow rounded-lg text-center">
         <p class="text-lg font-semibold">Total Participants</p>
         <span class="text-xl font-bold">{{ total_Participant }}</span>
       </div>
     </a>
 
-    <a href="{% url 'dashboard' %}?type=total_events">
+    <a href="{% url 'organizer-dashboard' %}?type=total_events">
       <div class="bg-green-500 text-white p-4 shadow rounded-lg text-center">
         <p class="text-lg font-semibold">Total Events</p>
         <span class="text-xl font-bold">{{ total_event }}</span>
       </div>
     </a>
 
-    <a href="{% url 'dashboard' %}?type=upcoming_events">
+    <a href="{% url 'organizer-dashboard' %}?type=upcoming_events">
       <div class="bg-yellow-500 text-white p-4 shadow rounded-lg text-center">
         <p class="text-lg font-semibold">Upcoming Events</p>
         <span class="text-xl font-bold">{{ upcoming_events }}</span>
       </div>
     </a>
 
-    <a href="{% url 'dashboard' %}?type=past_events">
+    <a href="{% url 'organizer-dashboard' %}?type=past_events">
       <div class="bg-red-500 text-white p-4 shadow rounded-lg text-center">
         <p class="text-lg font-semibold">Past Events</p>
         <span class="text-xl font-bold">{{ past_events }}</span>

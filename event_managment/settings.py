@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'event',
     'user',
     'debug_toolbar',
+    'core',
 ]
 
 MIDDLEWARE = [
@@ -153,3 +154,13 @@ STATICFILES_DIRS=[
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
+
+
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'mjtowfik659672@.gmail'
+EMAIL_HOST_PASSWORD = 'lkcj qfhk orsr hmbg'
