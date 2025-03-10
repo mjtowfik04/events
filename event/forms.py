@@ -48,12 +48,18 @@ class ParticipantForm(StyledFormMixin, forms.ModelForm):
 class EventForm(StyledFormMixin, forms.ModelForm):
     class Meta:
         model = Event
-        fields = [ 'description', 'date', 'time', 'location', 'category']
+        fields = ['description', 'date', 'time', 'location', 'category', 'assigned_to']
         widgets = {
             'date': forms.DateInput(attrs={'type': 'date'}),
             'time': forms.TimeInput(attrs={'type': 'time'}),
-            'category': forms.Select()
+            'category': forms.Select(),
+            'assigned_to': forms.CheckboxSelectMultiple()  # Multiple User নির্বাচন করার জন্য
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.apply_styled_widgets()
+
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
